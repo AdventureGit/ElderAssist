@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "839080502681",
+    "project_id": "elderassist-78a39",
+    "storage_bucket": "elderassist-78a39.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839080502681:android:85d22e8630259cc378df08",
+        "android_client_info": {
+          "package_name": "com.example.elderassist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsdcu-5jKXRyISM8-jGS9_hZsspwFTm68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
