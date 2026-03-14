@@ -1,6 +1,7 @@
 package com.example.elderassist;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,23 +41,32 @@ public class RegisterCaregiver extends AppCompatActivity {
         regCaregiver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, password;
-                email = String.valueOf(emailField.getText());
-                password = String.valueOf(passField.getText());
+                String email = emailField.getText().toString().trim();
+                String password = passField.getText().toString().trim();
+
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(RegisterCaregiver.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(RegisterCaregiver.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    FirebaseUser user = mAuth.getCurrentUser();
                                     Toast.makeText(RegisterCaregiver.this, "Account created successfully.",
                                             Toast.LENGTH_SHORT).show();
                                 } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(RegisterCaregiver.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
+                                    // Display the actual error message from Firebase
+                                    String errorMessage = task.getException() != null ? task.getException().getMessage() : "Authentication failed.";
+                                    Toast.makeText(RegisterCaregiver.this, errorMessage,
+                                            Toast.LENGTH_LONG).show();
+                                    Log.e("FirebaseAuth", "Registration failed", task.getException());
                                 }
                             }
                         });

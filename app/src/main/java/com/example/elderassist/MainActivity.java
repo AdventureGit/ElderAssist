@@ -1,5 +1,6 @@
 package com.example.elderassist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,23 +27,26 @@ public class MainActivity extends AppCompatActivity {
         Button caregiverBtn = findViewById(R.id.caregiverRegister);
         Button patientBtn = findViewById(R.id.patientRegister);
         TextView loginBtn = findViewById(R.id.loginFunction);
-        //behaviors
+
         caregiverBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.register_caregiver);
+                startActivity(new Intent(MainActivity.this, RegisterCaregiver.class));
             }
         });
+
         patientBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.register_patient);
+                // Assuming you have a RegisterPatient activity, otherwise create it.
+                // startActivity(new Intent(MainActivity.this, RegisterPatient.class));
             }
         });
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.login_main);
+                startActivity(new Intent(MainActivity.this, Login.class));
             }
         });
     }
