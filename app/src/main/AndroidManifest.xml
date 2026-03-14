@@ -14,6 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ElderAssist">
         <activity
+            android:name=".CreatePatient"
+            android:exported="false" />
+        <activity
+            android:name=".PatientOverview_Caregiver"
+            android:exported="false" />
+        <activity
             android:name=".RegisterCaregiver"
             android:exported="false" />
         <activity
