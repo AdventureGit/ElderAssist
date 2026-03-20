@@ -62,7 +62,7 @@ public class Login extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Login.this, "Login Successful.",
                                             Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(Login.this, PatientOverview_Caregiver.class);
+                                    Intent intent = new Intent(Login.this, RegisterCaregiver_Details.class);
                                     startActivity(intent);
                                     finish(); // Close login activity so user can't go back to it
                                 } else {

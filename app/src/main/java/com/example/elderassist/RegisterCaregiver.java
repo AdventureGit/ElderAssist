@@ -1,5 +1,6 @@
 package com.example.elderassist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterCaregiver extends AppCompatActivity {
     FirebaseAuth mAuth;
+    String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,9 @@ public class RegisterCaregiver extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(RegisterCaregiver.this, "Account created successfully.",
                                             Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(RegisterCaregiver.this, RegisterCaregiver_Details.class);
+                                    startActivity(intent);
+                                    finish();
                                 } else {
                                     // Display the actual error message from Firebase
                                     String errorMessage = task.getException() != null ? task.getException().getMessage() : "Authentication failed.";
