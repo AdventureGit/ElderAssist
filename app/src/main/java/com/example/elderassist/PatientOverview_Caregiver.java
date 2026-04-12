@@ -29,6 +29,7 @@ public class PatientOverview_Caregiver extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(PatientOverview_Caregiver.this, CreatePatient.class));
+
             }
         });
     }

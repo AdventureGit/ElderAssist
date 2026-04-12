@@ -20,61 +20,60 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-public class Login extends AppCompatActivity {
+public class RegisterPatient extends AppCompatActivity {
+
     FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.login_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.login_main), (v, insets) -> {
+        setContentView(R.layout.register_patient);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        mAuth = FirebaseAuth.getInstance();
-        Button AuthUser = findViewById(R.id.authLoginBtn);
-        EditText emailField = findViewById(R.id.inputEmailAddress);
-        EditText passField = findViewById(R.id.inputPassword);
+        EditText emailPatient = findViewById(R.id.emailPatient);
+        EditText passPatient = findViewById(R.id.passPatient);
+        Button regBtn = findViewById(R.id.regBtnPatient);
 
-        AuthUser.setOnClickListener(new View.OnClickListener() {
+        regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailField.getText().toString().trim();
-                String password = passField.getText().toString().trim();
-
+                String email = emailPatient.getText().toString();
+                String password = passPatient.getText().toString();
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(Login.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterPatient.this, "Enter email", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(Login.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterPatient.this, "Enter password", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                mAuth.signInWithEmailAndPassword(email, password)
+                mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(Login.this, "Login Successful.",
+                                    Toast.makeText(RegisterPatient.this, "Account created successfully.",
                                             Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(Login.this, PatientOverview_Caregiver.class);
+                                    Intent intent = new Intent(RegisterPatient.this, MainActivity.class);
                                     startActivity(intent);
-                                    finish(); // Close login activity so user can't go back to it
+                                    finish();
                                 } else {
-                                    // Show actual Firebase error
-                                    String errorMessage = task.getException() != null ? task.getException().getMessage() : "Login failed.";
-                                    Toast.makeText(Login.this, errorMessage,
+                                    // Display the actual error message from Firebase
+                                    String errorMessage = task.getException() != null ? task.getException().getMessage() : "Authentication failed.";
+                                    Toast.makeText(RegisterPatient.this, errorMessage,
                                             Toast.LENGTH_LONG).show();
-                                    Log.e("FirebaseAuth", "Login failed", task.getException());
+                                    Log.e("FirebaseAuth", "Registration failed", task.getException());
                                 }
                             }
                         });
             }
         });
     }
+
 }
