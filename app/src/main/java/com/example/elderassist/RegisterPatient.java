@@ -20,10 +20,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterPatient extends AppCompatActivity {
 
     FirebaseAuth mAuth;
+    String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +45,7 @@ public class RegisterPatient extends AppCompatActivity {
         EditText emailPatient = findViewById(R.id.emailPatient);
         EditText passPatient = findViewById(R.id.passPatient);
         Button regBtn = findViewById(R.id.regBtnPatient);
-
+        mAuth = FirebaseAuth.getInstance();
         regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,11 +66,22 @@ public class RegisterPatient extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(RegisterPatient.this, "Account created successfully.",
-                                            Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(RegisterPatient.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+                                    userID = mAuth.getCurrentUser().getUid();
+                                    if (userID != null) {
+                                        DocumentReference addUser = fStore.collection("users").document(userID);
+                                        Map<String, Object> user = new HashMap<>();
+                                        user.put("role", "patient");
+                                        addUser.set(user).addOnSuccessListener(unused -> {
+                                            Toast.makeText(RegisterPatient.this, "Account created successfully.",
+                                                    Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(RegisterPatient.this, EnterCode_Patient.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }).addOnFailureListener(e -> {
+                                            Toast.makeText(RegisterPatient.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
+                                    }
                                 } else {
                                     // Display the actual error message from Firebase
                                     String errorMessage = task.getException() != null ? task.getException().getMessage() : "Authentication failed.";

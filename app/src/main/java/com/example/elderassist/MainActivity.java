@@ -38,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
         patientBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Assuming you have a RegisterPatient activity, otherwise create it.
-                // startActivity(new Intent(MainActivity.this, RegisterPatient.class));
+                startActivity(new Intent(MainActivity.this, RegisterPatient.class));
             }
         });
 

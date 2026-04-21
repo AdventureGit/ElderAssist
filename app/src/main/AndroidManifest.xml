@@ -14,6 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ElderAssist">
         <activity
+            android:name=".ToDoList"
+            android:exported="false" />
+        <activity
+            android:name=".todo_patient"
+            android:exported="false" />
+        <activity
+            android:name=".EnterCode_Patient"
+            android:exported="false" />
+        <activity
             android:name=".RegisterPatient"
             android:exported="false" />
         <activity

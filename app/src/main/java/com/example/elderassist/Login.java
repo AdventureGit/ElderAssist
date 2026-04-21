@@ -16,11 +16,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Login extends AppCompatActivity {
     FirebaseAuth mAuth;
@@ -62,10 +65,33 @@ public class Login extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Login.this, "Login Successful.",
                                             Toast.LENGTH_SHORT).show();
+                                    DocumentReference documentReference = FirebaseFirestore.getInstance().collection("users").document(mAuth.getCurrentUser().getUid());
+                                    documentReference.get().addOnSuccessListener(documentSnapshot -> {
+                                                if (documentSnapshot.exists()) {
+                                                    String role = documentSnapshot.getString("role");
+                                                    if (role.equals("caregiver")) {
+                                                        Intent intent = new Intent(Login.this, PatientOverview_Caregiver.class);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    } else if (role.equals("patient")) {
+                                                        String patientStatus = documentSnapshot.getString("claimStatus");
+                                                        if (patientStatus.equals("unclaimed")) {
+                                                            startActivity(new Intent(Login.this, EnterCode_Patient.class));
+                                                            finish();
+                                                        } else if (patientStatus.equals("claimed")) {
+                                                            startActivity(new Intent(Login.this, ToDoList.class));
+                                                            finish();
+                                                        } else {
+                                                            return;
+                                                        }
+                                                    }
+                                                }
                                     Intent intent = new Intent(Login.this, PatientOverview_Caregiver.class);
                                     startActivity(intent);
-                                    finish(); // Close login activity so user can't go back to it
-                                } else {
+                                    finish();
+                                });
+                                }
+                                else {
                                     // Show actual Firebase error
                                     String errorMessage = task.getException() != null ? task.getException().getMessage() : "Login failed.";
                                     Toast.makeText(Login.this, errorMessage,

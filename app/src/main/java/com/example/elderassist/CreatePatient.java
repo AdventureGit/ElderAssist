@@ -37,6 +37,7 @@ public class CreatePatient extends AppCompatActivity {
     private Uri selectedImage;
     private DatePickerDialog datePick;
     String patientID;
+    String userID;
 
     public String generatePatientCode() {
         String tempPatientID = "";
@@ -57,6 +58,7 @@ public class CreatePatient extends AppCompatActivity {
         // INITIALIZE FIREBASE INSTANCES
         mAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
+        userID = mAuth.getCurrentUser().getUid();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -117,6 +119,8 @@ public class CreatePatient extends AppCompatActivity {
                 }
                 patient.put("gender", genderChoice);
                 patient.put("profile", "NA");
+                patient.put("caregiverID", userID);
+                patient.put("claimStatus", "unclaimed");
 
                 documentReference.set(patient).addOnSuccessListener(unused -> {
                     Toast.makeText(CreatePatient.this, "Profile created successfully.", Toast.LENGTH_SHORT).show();
