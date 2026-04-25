@@ -1,4 +1,4 @@
-package com.example.elderassist;
+package com.example.elderassist.PatientRV;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.elderassist.R;
 
 import java.util.List;
 

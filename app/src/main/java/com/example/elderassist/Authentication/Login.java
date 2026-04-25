@@ -1,4 +1,4 @@
-package com.example.elderassist;
+package com.example.elderassist.Authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,12 +16,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.dynamic.IFragmentWrapper;
+import com.example.elderassist.Caregiver.PatientOverview_Caregiver;
+import com.example.elderassist.Authentication.PatientAuth.EnterCode_Patient;
+import com.example.elderassist.R;
+import com.example.elderassist.ToDoList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -70,7 +72,7 @@ public class Login extends AppCompatActivity {
                                                 if (documentSnapshot.exists()) {
                                                     String role = documentSnapshot.getString("role");
                                                     if (role.equals("caregiver")) {
-                                                        Intent intent = new Intent(Login.this, PatientOverview_Caregiver.class);
+                                                        Intent intent = new Intent(Login.this, ToDoList.class);
                                                         startActivity(intent);
                                                         finish();
                                                     } else if (role.equals("patient")) {
@@ -86,8 +88,8 @@ public class Login extends AppCompatActivity {
                                                         }
                                                     }
                                                 }
-                                    Intent intent = new Intent(Login.this, PatientOverview_Caregiver.class);
-                                    startActivity(intent);
+                                    //Intent intent = new Intent(Login.this, PatientOverview_Caregiver.class);
+                                    //startActivity(intent);
                                     finish();
                                 });
                                 }

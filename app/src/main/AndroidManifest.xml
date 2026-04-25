@@ -20,25 +20,25 @@
             android:name=".todo_patient"
             android:exported="false" />
         <activity
-            android:name=".EnterCode_Patient"
+            android:name=".Authentication.PatientAuth.EnterCode_Patient"
             android:exported="false" />
         <activity
-            android:name=".RegisterPatient"
+            android:name=".Caregiver.RegisterPatient"
             android:exported="false" />
         <activity
-            android:name=".RegisterCaregiver_Details"
+            android:name=".Authentication.CaregiverAuth.RegisterCaregiver_Details"
             android:exported="false" />
         <activity
-            android:name=".CreatePatient"
+            android:name=".Caregiver.CreatePatient"
             android:exported="false" />
         <activity
-            android:name=".PatientOverview_Caregiver"
+            android:name=".Caregiver.PatientOverview_Caregiver"
             android:exported="false" />
         <activity
-            android:name=".RegisterCaregiver"
+            android:name=".Authentication.CaregiverAuth.RegisterCaregiver"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".Authentication.Login"
             android:exported="false" />
         <activity
             android:name=".login_main"

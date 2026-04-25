@@ -1,4 +1,4 @@
-package com.example.elderassist;
+package com.example.elderassist.Authentication.CaregiverAuth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,11 +16,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.elderassist.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterCaregiver extends AppCompatActivity {
     FirebaseAuth mAuth;

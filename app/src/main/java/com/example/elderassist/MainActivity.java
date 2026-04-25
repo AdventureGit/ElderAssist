@@ -12,6 +12,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.elderassist.Authentication.CaregiverAuth.RegisterCaregiver;
+import com.example.elderassist.Authentication.Login;
+import com.example.elderassist.Caregiver.RegisterPatient;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

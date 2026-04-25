@@ -1,7 +1,5 @@
-package com.example.elderassist;
+package com.example.elderassist.Caregiver;
 
-import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,10 +13,18 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.elderassist.PatientRV.MyAdapter;
+import com.example.elderassist.PatientRV.PatientItem;
+import com.example.elderassist.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PatientOverview_Caregiver extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +33,17 @@ public class PatientOverview_Caregiver extends AppCompatActivity {
         setContentView(R.layout.patient_overview);
 
         RecyclerView recyclerView = findViewById(R.id.patientList);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore fstore = FirebaseFirestore.getInstance();
         List<PatientItem> items = new ArrayList<PatientItem>();
+
+//        fstore.collection("patients").whereEqualTo("caregiverID", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
+//            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+//                items.add(new PatientItem(R.drawable.patient_placeholder_foreground, doc.getString("name"), doc.getString("patientCode")));
+//            }
+//        });
         //items
         items.add(new PatientItem(R.drawable.patient_placeholder_foreground, "1234", "abcd"));
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new MyAdapter(items, this));
 

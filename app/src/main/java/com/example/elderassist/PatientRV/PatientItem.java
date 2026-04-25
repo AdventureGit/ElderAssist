@@ -1,4 +1,4 @@
-package com.example.elderassist;
+package com.example.elderassist.PatientRV;
 
 public class PatientItem {
     String name;
