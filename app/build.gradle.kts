@@ -55,4 +55,6 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(platform("com.google.firebase:firebase-bom:34.10.0"))
+    implementation("com.squareup.okhttp3:okhttp:5.3.2")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

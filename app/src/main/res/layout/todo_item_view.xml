@@ -18,4 +18,13 @@
         android:layout_marginLeft="32dp"
         android:text="Sample Date" />
 
+    <Button
+        android:id="@+id/generateSubtasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/todoItem"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="150dp"
+        android:text="Subtasks" />
+
 </RelativeLayout>

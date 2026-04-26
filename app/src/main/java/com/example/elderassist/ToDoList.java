@@ -1,6 +1,7 @@
 package com.example.elderassist;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elderassist.Caregiver.CreatePatient;
+import com.example.elderassist.Caregiver.GenerateReport;
 import com.example.elderassist.ToDoRV.ToDoAdapter;
 import com.example.elderassist.ToDoRV.ToDoItem;
 
@@ -54,6 +56,8 @@ public class ToDoList extends AppCompatActivity {
             return insets;
         });
         Button createtaskBtn = findViewById(R.id.createtaskBtn);
+        Button viewReportBtn = findViewById(R.id.viewReportBtn);
+        //Button generateSubtasks = findViewById(R.id.generateSubtasks);
         EditText taskInfo = findViewById(R.id.taskInfo);
         EditText taskDate = findViewById(R.id.taskDate);
         ImageView taskDateSelect = findViewById(R.id.taskDateSelect);
@@ -90,6 +94,12 @@ public class ToDoList extends AppCompatActivity {
                 else{
                     Toast.makeText(ToDoList.this, "Please enter a task or date.", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        viewReportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ToDoList.this, GenerateReport.class));
             }
         });
     }
