@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity {
                                                 if (documentSnapshot.exists()) {
                                                     String role = documentSnapshot.getString("role");
                                                     if (role.equals("caregiver")) {
-                                                        Intent intent = new Intent(Login.this, ToDoList.class);
+                                                        Intent intent = new Intent(Login.this, PatientOverview_Caregiver.class);
                                                         startActivity(intent);
                                                         finish();
                                                     } else if (role.equals("patient")) {

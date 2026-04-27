@@ -8,14 +8,13 @@
     android:layout_width="48dp"
     android:layout_height="48dp"
     />
-<TextView
-    android:id="@+id/patientName"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_toEndOf="@id/patientImage"
-    android:textColor="@color/black"
-    tools:text="Name"
-    />
+
+    <TextView
+        android:id="@+id/patientName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/patientImage"
+        tools:text="Name" />
     <TextView
         android:id="@+id/patientCodeDisplay"
         android:layout_width="match_parent"
@@ -25,4 +24,11 @@
         android:textColor="@color/black"
         tools:text="1234"
         />
+
+    <Button
+        android:id="@+id/viewPatient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/patientName"
+        android:text="View Patient" />
 </RelativeLayout>

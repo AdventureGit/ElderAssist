@@ -25,7 +25,6 @@ import java.util.List;
 
 public class PatientOverview_Caregiver extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +34,10 @@ public class PatientOverview_Caregiver extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.patientList);
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore fstore = FirebaseFirestore.getInstance();
-        List<PatientItem> items = new ArrayList<PatientItem>();
+        List<PatientItem> items = new ArrayList<>();
+        MyAdapter adapter = new MyAdapter(items, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
 //        fstore.collection("patients").whereEqualTo("caregiverID", uid).get().addOnSuccessListener(queryDocumentSnapshots -> {
 //            for (DocumentSnapshot doc : queryDocumentSnapshots) {
@@ -43,15 +45,22 @@ public class PatientOverview_Caregiver extends AppCompatActivity {
 //            }
 //        });
         //items
-        items.add(new PatientItem(R.drawable.patient_placeholder_foreground, "1234", "abcd"));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MyAdapter(items, this));
+        //items.add(new PatientItem(R.drawable.patient_placeholder_foreground, "1234", "abcd"));
+        fstore.collection("patients")
+                        .whereEqualTo("caregiverID", uid)
+                        .get()
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            items.clear();
+                            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                                    items.add(new PatientItem(R.drawable.patient_placeholder_foreground, doc.getString("name"), doc.getId()));
+                                }
+                            adapter.notifyDataSetChanged();
+                        });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-
         });
         Button addPatient = findViewById(R.id.addPatient);
 

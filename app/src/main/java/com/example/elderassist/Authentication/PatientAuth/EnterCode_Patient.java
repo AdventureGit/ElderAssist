@@ -21,7 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EnterCode_Patient extends AppCompatActivity {
+public class   EnterCode_Patient extends AppCompatActivity {
     String patientCode;
     String userID;
     @Override
@@ -46,7 +46,7 @@ public class EnterCode_Patient extends AppCompatActivity {
         documentReference.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 Map<String, Object> user = new HashMap<>();
-                user.put("patientCode", documentSnapshot.getString("patientCode"));
+                user.put("patientCode", documentSnapshot.getId());
                 user.put("birth", documentSnapshot.getString("birth"));
                 user.put("gender", documentSnapshot.getString("gender"));
                 user.put("name", documentSnapshot.getString("name"));
