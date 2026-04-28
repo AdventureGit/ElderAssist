@@ -12,6 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.elderassist.Caregiver.GenerateReport;
 import com.example.elderassist.R;
 import com.example.elderassist.ToDoList;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,10 +37,11 @@ public class   EnterCode_Patient extends AppCompatActivity {
         });
         EditText enterCode = findViewById(R.id.enterCode);
         Button submitCode = findViewById(R.id.submitCode);
-        patientCode = enterCode.getText().toString();
+
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         submitCode.setOnClickListener(v -> {
+            patientCode = enterCode.getText().toString();
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
         DocumentReference documentReference = fStore.collection("patients").document(patientCode);
         DocumentReference addUser = fStore.collection("users").document(userID);
@@ -57,7 +59,7 @@ public class   EnterCode_Patient extends AppCompatActivity {
                     documentReference.update("claimStatus", "claimed");
                     addUser.set(user);
                     Toast.makeText(EnterCode_Patient.this, "Patient claimed successfully.", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(EnterCode_Patient.this, ToDoList.class));
+                    startActivity(new Intent(EnterCode_Patient.this, GenerateReport.class));
                     finish();
                 } else {
                     Toast.makeText(EnterCode_Patient.this, "Patient already claimed.", Toast.LENGTH_SHORT).show();

@@ -28,7 +28,7 @@ import okhttp3.Response;
 public class ToDoViewHolder extends RecyclerView.ViewHolder {
     TextView task;
     TextView date;
-    CheckBox isChecked;
+    CheckBox taskCheckbox;
     Button genSubtasks;
 
     public ToDoViewHolder(@NonNull View itemView) {
@@ -36,6 +36,16 @@ public class ToDoViewHolder extends RecyclerView.ViewHolder {
         task = itemView.findViewById(R.id.todoItem);
         date = itemView.findViewById(R.id.todoDate);
         genSubtasks = itemView.findViewById(R.id.generateSubtasks);
+        taskCheckbox = itemView.findViewById(R.id.todoItem);
+
+//        taskCheckbox.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (taskCheckbox.isChecked()){
+//                    String activityId = task.getTag().toString();
+//                }
+//            }
+//        });
 
         genSubtasks.setOnClickListener(new View.OnClickListener() {
             @Override

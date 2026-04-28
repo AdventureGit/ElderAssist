@@ -42,6 +42,8 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
                         .addOnSuccessListener(queryDocumentSnapshots -> {
                             if(!queryDocumentSnapshots.isEmpty()){
                                 Intent intent = new Intent(v.getContext(), ToDoList.class);
+                                String patientID = queryDocumentSnapshots.getDocuments().get(0).getId();
+                                intent.putExtra("patientID", patientID);
                                 intent.putExtra("patientCode", refPatientCode);
                                 v.getContext().startActivity(intent);
                             }
