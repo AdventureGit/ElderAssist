@@ -14,13 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ElderAssist">
         <activity
+            android:name=".Subtasks"
+            android:exported="false" />
+        <activity
             android:name=".Caregiver.GenerateReport"
             android:exported="false" />
         <activity
             android:name=".ToDoList"
-            android:exported="false" />
-        <activity
-            android:name=".todo_patient"
             android:exported="false" />
         <activity
             android:name=".Authentication.PatientAuth.EnterCode_Patient"
@@ -43,17 +43,6 @@
         <activity
             android:name=".Authentication.Login"
             android:exported="false" />
-        <activity
-            android:name=".login_main"
-            android:exported="false" />
-        <activity
-            android:name=".LoginMainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.ElderAssist" />
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:exported="false"
-            android:label="@string/title_activity_login" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

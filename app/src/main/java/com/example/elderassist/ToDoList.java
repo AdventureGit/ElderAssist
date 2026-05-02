@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -20,141 +18,136 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.elderassist.Caregiver.CreatePatient;
 import com.example.elderassist.Caregiver.GenerateReport;
 import com.example.elderassist.ToDoRV.ToDoAdapter;
 import com.example.elderassist.ToDoRV.ToDoItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.w3c.dom.Text;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ToDoList extends AppCompatActivity {
-    List<ToDoItem> items = new ArrayList<ToDoItem>();
+    List<ToDoItem> items = new ArrayList<>();
     private DatePickerDialog datePick;
     private ToDoAdapter adapter;
     FirebaseFirestore fstore;
     FirebaseAuth mAuth;
     Button viewReportBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.todo_list);
+        
         viewReportBtn = findViewById(R.id.viewReportBtn);
         fstore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        String userID = mAuth.getCurrentUser().getUid();
-        fstore.collection("users")
-                .document(userID)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        String role = documentSnapshot.getString("role");
-                            if (role == "patient") {
+        
+        if (mAuth.getCurrentUser() != null) {
+            String userID = mAuth.getCurrentUser().getUid();
+            fstore.collection("users")
+                    .document(userID)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String role = documentSnapshot.getString("role");
+                            if ("patient".equals(role)) {
                                 viewReportBtn.setVisibility(View.GONE);
                             }
-                            else{
-                                //viewReportBtn.setVisibility(View.GONE);
-                            }
-                    }
-                        });
+                        }
+                    });
+        }
 
         RecyclerView recyclerView = findViewById(R.id.taskRV);
-        //items.add(new ToDoItem("4/25/2026", "Go for a walk"));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //recyclerView.setAdapter(new ToDoAdapter(items, this));
         adapter = new ToDoAdapter(items, this);
         recyclerView.setAdapter(adapter);
 
-        fstore = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        //String userID = mAuth.getCurrentUser().getUid();
         String patientID = getIntent().getStringExtra("patientID");
-        fstore.collection("activities")
-                        .whereEqualTo("patientID", patientID)
-                        .addSnapshotListener((value, error) -> {
-                                    items.clear();
-                                    for (com.google.firebase.firestore.DocumentSnapshot doc : value) {
-                                        items.add(new ToDoItem(doc.getString("date"), doc.getString("task")));
-                                        adapter.notifyItemInserted(items.size() - 1);
-                                    }
-                                });
+        if (patientID != null) {
+            fstore.collection("activities")
+                    .whereEqualTo("patientID", patientID)
+                    .addSnapshotListener((value, error) -> {
+                        if (error != null) {
+                            return;
+                        }
+                        if (value != null) {
+                            items.clear();
+                            for (DocumentSnapshot doc : value) {
+                                String taskStatus = doc.getString("status");
+                                // Safe comparison to avoid NullPointerException
+                                if (!"1".equals(taskStatus)) {
+                                    items.add(new ToDoItem(doc.getString("date"), doc.getString("task")));
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         Button createtaskBtn = findViewById(R.id.createtaskBtn);
-        viewReportBtn = findViewById(R.id.viewReportBtn);
-        //Button generateSubtasks = findViewById(R.id.generateSubtasks);
         EditText taskInfo = findViewById(R.id.taskInfo);
         EditText taskDate = findViewById(R.id.taskDate);
         ImageView taskDateSelect = findViewById(R.id.taskDateSelect);
+        //Button ttsBtn = findViewById(R.id.ttsBtn);
 
 
-        taskDateSelect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
+        taskDateSelect.setOnClickListener(v -> {
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-                datePick = new DatePickerDialog(ToDoList.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        taskDate.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                    }
-                }, year, month, day);
-                datePick.show();
-            }
+            datePick = new DatePickerDialog(ToDoList.this, (view, year1, month1, dayOfMonth) -> 
+                    taskDate.setText(dayOfMonth + "/" + (month1 + 1) + "/" + year1), year, month, day);
+            datePick.show();
         });
 
-        createtaskBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String task = taskInfo.getText().toString();
-                String date = taskDate.getText().toString();
-                mAuth = FirebaseAuth.getInstance();
+        createtaskBtn.setOnClickListener(v -> {
+            String task = taskInfo.getText().toString();
+            String date = taskDate.getText().toString();
+            String patientId = getIntent().getStringExtra("patientID");
+            
+            if (mAuth.getCurrentUser() != null && !task.isEmpty() && !date.isEmpty()) {
                 String userID = mAuth.getCurrentUser().getUid();
-                String patientID = getIntent().getStringExtra("patientID");
-                if (!task.isEmpty() && !date.isEmpty()) {
-                    fstore = FirebaseFirestore.getInstance();
-                    Map<String, Object> activity = new HashMap<>();
-                    activity.put("task", task);
-                    activity.put("date", date);
-                    activity.put("status", "0");
-                    activity.put("repeat", "no");
-                    activity.put("caregiverID", userID);
-                    activity.put("patientID", patientID);
-                    fstore.collection("activities").add(activity).addOnSuccessListener(documentReference -> {
-                        Toast.makeText(ToDoList.this, "Activity added successfully", Toast.LENGTH_SHORT).show();
-                    }).addOnFailureListener(e -> {
-                        Toast.makeText(ToDoList.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
-//                    items.add(new ToDoItem(date, task));
-//                    adapter.notifyItemInserted(items.size() - 1);
+                Map<String, Object> activity = new HashMap<>();
+                activity.put("task", task);
+                activity.put("date", date);
+                activity.put("status", "0");
+                activity.put("repeat", "no");
+                activity.put("caregiverID", userID);
+                activity.put("patientID", patientId);
+                
+                fstore.collection("activities").add(activity).addOnSuccessListener(documentReference -> {
+                    Toast.makeText(ToDoList.this, "Activity added successfully", Toast.LENGTH_SHORT).show();
                     taskInfo.setText("");
                     taskDate.setText("");
-                }
-                else{
-                    Toast.makeText(ToDoList.this, "Please enter a task or date.", Toast.LENGTH_SHORT).show();
-                }
+                }).addOnFailureListener(e -> Toast.makeText(ToDoList.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            } else {
+                Toast.makeText(ToDoList.this, "Please enter a task or date.", Toast.LENGTH_SHORT).show();
             }
         });
-        viewReportBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ToDoList.this, GenerateReport.class));
-            }
-        });
+
+        viewReportBtn.setOnClickListener(v -> startActivity(new Intent(ToDoList.this, GenerateReport.class)));
+
+//        ttsBtn.setOnClickListener(v -> {
+//
+//        });
+
+    }
+    private void ttsCall(List<String> taskInput){
+
     }
 }
