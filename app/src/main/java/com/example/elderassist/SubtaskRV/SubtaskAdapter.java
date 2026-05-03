@@ -13,9 +13,9 @@ import java.util.ArrayList;
 
 public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskViewHolder> {
     Context context;
-    ArrayList<String> items;
+    ArrayList<SubtaskItem> items;
 
-    public SubtaskAdapter(Context context, ArrayList<String> items) {
+    public SubtaskAdapter(Context context, ArrayList<SubtaskItem> items) {
         this.context = context;
         this.items = items;
     }
@@ -28,8 +28,8 @@ public class SubtaskAdapter extends RecyclerView.Adapter<SubtaskViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SubtaskViewHolder holder, int position) {
-        String currentItem = items.get(position);
-        holder.subtask.setText(currentItem);
+        SubtaskItem currentItem = items.get(position);
+        holder.subtask.setText(currentItem.getTaskName());
     }
 
     @Override

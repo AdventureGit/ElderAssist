@@ -127,6 +127,7 @@ public class ToDoList extends AppCompatActivity {
                 activity.put("date", date);
                 activity.put("status", "0");
                 activity.put("repeat", "no");
+                activity.put("subtasks", "-1");
                 activity.put("caregiverID", userID);
                 activity.put("patientID", patientId);
                 

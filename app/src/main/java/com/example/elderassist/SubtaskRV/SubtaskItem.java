@@ -1,19 +1,17 @@
 package com.example.elderassist.SubtaskRV;
 
-import android.widget.CheckBox;
-
 public class SubtaskItem {
-    CheckBox subtask;
+    private String taskName;
 
-    public SubtaskItem(CheckBox subtask) {
-        this.subtask = subtask;
+    public SubtaskItem(String taskName) {
+        this.taskName = taskName;
     }
 
-    public CheckBox getSubtask() {
-        return subtask;
+    public String getTaskName() {
+        return taskName;
     }
 
-    public void setSubtask(CheckBox subtask) {
-        this.subtask = subtask;
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 }
